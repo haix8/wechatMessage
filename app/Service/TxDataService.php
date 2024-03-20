@@ -27,7 +27,7 @@ class TxDataService
             $client = new Client();
             $response = $client->get($uri, [
                 'query' => [
-                    'key' => env('tianxing_key'),//参数
+                    'key' => env('TIANXING_KEY'),//参数
                 ]
             ]);
 
@@ -52,7 +52,7 @@ class TxDataService
             $client = new Client();
             $response = $client->get($uri, [
                 'query' => [
-                    'key' => env('tianxing_key'),//参数
+                    'key' => env('TIANXING_KEY'),//参数
                 ]
             ]);
 
@@ -72,7 +72,7 @@ class TxDataService
             $client = new Client();
             $response = $client->get($uri, [
                 'query' => [
-                    'key' => env('tianxing_key'),//参数
+                    'key' => env('TIANXING_KEY'),//参数
                     'city' => '郑州',
                     'type' => '1'
                 ]

@@ -21,8 +21,8 @@ class WechatService
     {
 
         $config = [
-            'app_id' => env('wechat_appid'),
-            'secret' => env('wechat_key'),
+            'app_id' => env('WECHAT_APPID'),
+            'secret' => env('WECHAT_KEY'),
             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
             'response_type' => 'array',
             //...

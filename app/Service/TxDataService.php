@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DataService.php
  * Author: K
@@ -9,6 +10,7 @@ namespace App\Service;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 
 class TxDataService
 {
@@ -27,7 +29,7 @@ class TxDataService
             $client = new Client();
             $response = $client->get($uri, [
                 'query' => [
-                    'key' => env('TIANXING_KEY'),//参数
+                    'key' => env('TIANXING_KEY'), //参数
                 ]
             ]);
 
@@ -52,7 +54,7 @@ class TxDataService
             $client = new Client();
             $response = $client->get($uri, [
                 'query' => [
-                    'key' => env('TIANXING_KEY'),//参数
+                    'key' => env('TIANXING_KEY'), //参数
                 ]
             ]);
 
@@ -64,6 +66,31 @@ class TxDataService
         }
     }
 
+    public static function tianqi2($city = '郑州')
+    {
+        $appid = '48264857';
+        $appsecret = 'OsH63sMQ';
+        try {
+            $uri = 'http://gfeljm.tianqiapi.com/api';
+            $client = new Client();
+            $response = $client->get($uri, [
+                'query' => [
+                    'appid' => $appid,
+                    'appsecret' => $appsecret,
+                    'version' => 'v63',
+                    'city' => $city,
+                    'unescape' => 1
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents());
+            return $result;
+        } catch (\Exception $exception) {
+            Log::debug($exception->getMessage());
+            return '';
+        }
+    }
+
+
     public static function tianqi()
     {
 
@@ -72,13 +99,18 @@ class TxDataService
             $client = new Client();
             $response = $client->get($uri, [
                 'query' => [
-                    'key' => env('TIANXING_KEY'),//参数
+                    'key' => env('TIANXING_KEY'), //参数
                     'city' => '郑州',
                     'type' => '1'
                 ]
             ]);
-            return json_decode($response->getBody()->getContents())->result;
+            $result = json_decode($response->getBody()->getContents());
+            if ($result->code != 200) {
+                throw new \Exception($result->msg);
+            }
+            return $result->result;
         } catch (\Exception $exception) {
+            Log::debug($exception->getMessage());
             return '';
         }
 

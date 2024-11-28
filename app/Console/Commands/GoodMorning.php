@@ -16,10 +16,9 @@ class GoodMorning extends Command
     {
 
         $boy = 'oz87L51lKZniaMvmwJtQKPAOs3pY';
-        (new WechatService())->good_morning($boy);
+        (new WechatService())->good_morning($boy, '郑州'); // 鹤壁  郑州
 
-        $girl = 'oz87L5wzkwqaL37Lv2teK8zqcMfo';
-        (new WechatService())->good_morning($girl);
-
+        // $girl = 'oz87L5wzkwqaL37Lv2teK8zqcMfo';
+        // (new WechatService())->good_morning($girl, '鹤壁');
     }
 }

@@ -24,7 +24,7 @@ class LoveDayService
      */
     public static $birthday = '1996-8-28';
 
-    public static $childBirthday = '2024-5-6';
+    public static $childBirthday = '2024-5-1';
 
 
     /**
@@ -46,7 +46,6 @@ class LoveDayService
     {
         $x1 = Carbon::parse(self::$loveDays)->format('md');
         $x2 = Carbon::now()->format('md');
-
         return $x1 === $x2;
     }
 

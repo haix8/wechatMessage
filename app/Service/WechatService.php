@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WechatService.php
  * Author: K
@@ -29,12 +30,12 @@ class WechatService
         ];
         $this->app = Factory::officialAccount($config);
 
-//        $templates = $this->app->template_message->getPrivateTemplates();
+        //        $templates = $this->app->template_message->getPrivateTemplates();
 
     }
 
 
-    public function good_morning($touser)
+    public function good_morning($touser, $city)
     {
 
         /*
@@ -52,46 +53,51 @@ class WechatService
 {{rainbow.DATA}}
 
 
-         */
+❤五一妈妈早安吖❤
+所在城市：{{city.DATA}} 
+今天天气：{{weather.DATA}} 
+气温变化：{{minTemperature.DATA}}~{{maxTemperature.DATA}} 
+今天建议：{{tips.DATA}} 
+今天是我们相恋De第{{loveDays.DATA}}天 
+距离大宝宝的生日还有{{birthDay.DATA}}天 
+距离小宝宝的生日还有{{childBirthDay.DATA}}天 
+每日一拍：{{rainbow.DATA}}
 
-        $weather = TxDataService::tianqi();
+
+         */
+        $weather = TxDataService::tianqi2($city);
         $rainbow = TxDataService::caihongpi();
         $loveDays = LoveDayService::getLoveDays();
         $birthDays = LoveDayService::getBirthDays(LoveDayService::$birthday);
         $childBirthDay = LoveDayService::getBirthDays(LoveDayService::$childBirthday);
-        $remark = ' ';
+        $remark = '';
         if (LoveDayService::loveAnniversary()) {
             $remark = '今天是恋爱周年纪念日！永远爱你~';
         }
 
+        $rainbow = $remark ? $remark : $rainbow;
         $msg = [
             'touser' => $touser,
-            'template_id' => '2-grcuQ9CVdf0mMrPjf_6ipXBiCN1t0XyVmhn6GC_YM',
+            'template_id' => 'eUWCLQm27YetlDIyp8r2usy1he-84zlWVh-jikP0Kj4',
             'data' => [
-                'date' => [
-                    date('Y-m-d') . $weather->week,
-                    '#00BFFF'
-                ],
-                // "❤"
-                'remark' => $remark,
                 'city' => [
-                    $weather->area,
+                    $weather->city,
                     ''
                 ],
                 'weather' => [
-                    $weather->weather,
+                    $weather->wea,
                     "#1f95c5"
                 ],
                 'minTemperature' => [
-                    'value' => $weather->lowest,
+                    'value' => $weather->tem2,
                     'color' => '#0ace3c'
                 ],
                 'maxTemperature' => [
-                    'value' => $weather->highest,
+                    'value' => $weather->tem1,
                     'color' => '#dc1010'
                 ],
                 'tips' => [
-                    $weather->tips,
+                    $weather->air_tips,
                     ""
                 ],
                 'loveDays' => [
@@ -112,11 +118,13 @@ class WechatService
                 ],
             ],
         ];
-        $result = $this->app->template_message->send($msg);
-
-
-        Log::debug('发送成功');
-        Log::debug(json_encode($msg,JSON_UNESCAPED_UNICODE));
-        Log::debug($result);
+        try {
+            $result = $this->app->template_message->send($msg);
+            Log::debug('发送成功');
+            Log::debug(json_encode($msg, JSON_UNESCAPED_UNICODE));
+            Log::debug($result);
+        } catch (\Exception $exception) {
+            Log::debug($exception->getMessage());
+        }
     }
 }

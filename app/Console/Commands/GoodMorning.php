@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Service\WechatService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class GoodMorning extends Command
 {
@@ -18,7 +17,7 @@ class GoodMorning extends Command
         $boy = 'oz87L51lKZniaMvmwJtQKPAOs3pY';
         (new WechatService())->good_morning($boy, '郑州'); // 鹤壁  郑州
 
-        // $girl = 'oz87L5wzkwqaL37Lv2teK8zqcMfo';
-        // (new WechatService())->good_morning($girl, '鹤壁');
+        $girl = 'oz87L5wzkwqaL37Lv2teK8zqcMfo';
+        (new WechatService())->good_morning($girl, '鹤壁');
     }
 }
